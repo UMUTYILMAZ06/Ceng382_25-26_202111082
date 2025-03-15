@@ -158,16 +158,6 @@
             border-radius: 4px;
         }
 
-        #liveClock {
-        font-size: 20px;
-        font-weight: bold;
-        color: white;
-        margin-bottom: 20px;
-        text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
-        font-family: Arial, sans-serif;
-    }
-
-
         /* Saat yönünde döndürme animasyonu (Sol hançer için) */
         @keyframes daggerSpinClockwise {
             from { transform: rotate(45deg); }
@@ -179,9 +169,6 @@
             from { transform: rotate(-45deg); }
             to { transform: rotate(-405deg); } /* -360 - 45 */
         }
-
-        
-
         
    /* Assassin's Creed Logosu için Ana Konteyner */
 .ac-logo {
@@ -289,73 +276,27 @@
     </div>
         <div class="shuriken shuriken-left"></div>
         <h2>Login</h2>
-        <div id="liveClock"></div>
         <div class="shuriken shuriken-right"></div>
         <div class="blade blade-left"></div>
         <div class="blade blade-right"></div>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-
-        <button onclick="storeLogin(); playVideo();">Login</button>
+        <input type="text" placeholder="Username">
+        <input type="password" placeholder="Password">
+        <button onclick="playVideo()">Login</button>
     </div>
     <div class="video-container" id="videoContainer">
         <video id="video" src="video.mp4" controls></video>
     </div>
     <audio id="bladeSound" src="blade.mp3"></audio>
     <script>
-        let loginAttempts = [];
         function playVideo() {
             let videoContainer = document.getElementById("videoContainer");
             let video = document.getElementById("video");
             videoContainer.style.display = "block";
             video.play();
         }
-        function storeLogin() {
-    let username = document.getElementById("username").value;
-    let password = document.getElementById("password").value;
-
-    if (username === "admin" && password === "admin") {
-        // Giriş başarılıysa yönlendir
-        window.location.href = "table.html";
-    } else {
-        alert("Invalid credentials. Please try again.");
-    }
-}
-
-
         function playSound() {
             document.getElementById("bladeSound").play();
         }
-
-        function updateClock() {
-    let now = new Date();
-    let hours = now.getHours().toString().padStart(2, '0');
-    let minutes = now.getMinutes().toString().padStart(2, '0');
-    let seconds = now.getSeconds().toString().padStart(2, '0');
-    let timeString = `${hours}:${minutes}:${seconds}`;
-    
-    document.getElementById("liveClock").textContent = timeString;
-}
-
-// Her saniyede bir saati güncelle
-setInterval(updateClock, 1000);
-
-// Sayfa yüklendiğinde hemen çalıştır
-updateClock();
-
-document.addEventListener("keydown", function(event) {
-    if (event.key === "h" || event.key === "H") {
-        let loginContainer = document.querySelector(".login-container");
-        if (loginContainer.style.display === "none") {
-            loginContainer.style.display = "block";
-        } else {
-            loginContainer.style.display = "none";
-        }
-    }
-});
-
-
-
     </script>
 </body>
 </html>
