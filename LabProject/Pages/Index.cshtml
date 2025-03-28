@@ -1,0 +1,80 @@
+﻿@page
+@model LabProject.Pages.IndexModel
+@{
+    ViewData["Title"] = "Class Information";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Form for Class Information -->
+        <div class="col-md-4">
+            <h2>@(Model.IsEditing ? "Edit" : "Add") Class Information</h2>
+            <form method="post">
+                <!-- Hidden Field for Class Id (For Edit Mode) -->
+                <input type="hidden" asp-for="NewClass.Id" />
+                <div class="form-group">
+                    <label for="ClassName">Class Name</label>
+                    <input type="text" class="form-control" asp-for="NewClass.ClassName" required />
+                </div>
+                <div class="form-group">
+                    <label for="StudentCount">Student Count</label>
+                    <input type="number" class="form-control" asp-for="NewClass.StudentCount" required />
+                </div>
+                <div class="form-group">
+                    <label for="Description">Description</label>
+                    <textarea class="form-control" asp-for="NewClass.Description"></textarea>
+                </div>
+
+                <!-- Conditional Button: Update or Add -->
+                @if (Model.IsEditing)
+                {
+                    <button type="submit" asp-page-handler="Update" class="btn btn-warning mt-3">Update</button>
+                }
+                else
+                {
+                    <button type="submit" asp-page-handler="Add" class="btn btn-primary mt-3">Save Class</button>
+                }
+            </form>
+        </div>
+
+        <!-- Table to Display Class Data -->
+        <div class="col-md-8">
+            <h2>Class List</h2>
+            <table class="table table-bordered table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Class Name</th>
+                        <th>Student Count</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (LabProject.Pages.IndexModel.ClassList.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center">No class information available.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in LabProject.Pages.IndexModel.ClassList)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.ClassName</td>
+                                <td>@item.StudentCount</td>
+                                <td>@item.Description</td>
+                                <td>
+                                    <a asp-page-handler="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                                    <a asp-page-handler="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

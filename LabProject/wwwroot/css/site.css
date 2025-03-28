@@ -1,0 +1,158 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Button focus and hover effects */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #ffcc00; /* Sarı vurgu */
+}
+
+/* Ensuring body covers full height */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+/* Bottom margin for footer */
+body {
+  margin-bottom: 60px;
+  background-color: #fff3cd; /* Açık sarı arka plan */
+}
+
+/* Custom styles for form and table */
+h2 {
+  margin-bottom: 20px;
+  color: #b71c1c; /* Koyu kırmızı başlık */
+}
+
+/* Tablo margin ve padding ayarları */
+.table {
+  margin-top: 20px;
+  background-color: #fffbe6; /* Hafif sarı */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Padding and margin adjustments */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Button spacing */
+.btn {
+  margin: 3px;
+}
+
+/* Custom class for responsive container */
+.container {
+  padding-top: 20px;
+  background-color: #fffde7; /* Sarımsı arka plan */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+/* BUTTON RENKLERİ VE STİLLERİ */
+
+/* Save Class (Add) button - Sarı */
+.btn-primary {
+  background-color: #ffcc00; /* Sarı */
+  border-color: #ffcc00;
+  color: #212529;
+}
+
+.btn-primary:hover {
+  background-color: #e6b800;
+  border-color: #d39e00;
+}
+
+/* Update (Edit) button - Kırmızı */
+.btn-warning {
+  background-color: #dc3545; /* Kırmızı */
+  border-color: #dc3545;
+  color: white;
+}
+
+.btn-warning:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+/* Delete button - Koyu kırmızı */
+.btn-danger {
+  background-color: #b71c1c; /* Koyu kırmızı */
+  border-color: #b71c1c;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #9a0007;
+  border-color: #8a0005;
+}
+
+/* Table header styles */
+.table th {
+  background-color: #ffcc00; /* Sarı tablo başlığı */
+  color: black;
+  text-align: center;
+}
+
+/* Table row hover effect */
+.table-hover tbody tr:hover {
+  background-color: #fff3cd; /* Hafif sarı hover efekti */
+}
+
+/* FORM KISMI İÇİN RENK VE YUVARLAK KENARLAR */
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #ffd54f;
+  padding: 10px;
+  background-color: #fffde7;
+}
+
+/* Save Class button özel stil */
+#saveClassBtn {
+  background-color: #ffeb3b; /* Açık sarı */
+  border-color: #ffeb3b;
+  color: #212529;
+}
+
+#saveClassBtn:hover {
+  background-color: #fdd835;
+  border-color: #fbc02d;
+}
+
+/* Update butonu stil */
+#updateClassBtn {
+  background-color: #dc3545; /* Kırmızı */
+  border-color: #dc3545;
+  color: white;
+}
+
+#updateClassBtn:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+/* Footer stilleri */
+footer {
+  background-color: #fff3cd;
+  padding: 10px 0;
+  text-align: center;
+  border-top: 1px solid #ffe082;
+}
+
+footer a {
+  color: #ffcc00;
+  text-decoration: none;
+}
