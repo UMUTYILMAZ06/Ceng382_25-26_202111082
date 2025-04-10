@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\90553\\LabProject\\LabProject.csproj": {}
+    "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\LabProject.csproj": {}
   },
   "projects": {
-    "C:\\Users\\90553\\LabProject\\LabProject.csproj": {
+    "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\LabProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\90553\\LabProject\\LabProject.csproj",
+        "projectUniqueName": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\LabProject.csproj",
         "projectName": "LabProject",
-        "projectPath": "C:\\Users\\90553\\LabProject\\LabProject.csproj",
+        "projectPath": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\LabProject.csproj",
         "packagesPath": "C:\\Users\\90553\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\90553\\LabProject\\obj\\",
+        "outputPath": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\90553\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -32,11 +32,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
