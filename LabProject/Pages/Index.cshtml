@@ -9,8 +9,11 @@
         <!-- Form for Class Information -->
         <div class="col-md-4">
             <h2>@(Model.IsEditing ? "Edit" : "Add") Class Information</h2>
+
+            <!-- Display IsEditing value -->
+            <p><strong>IsEditing Value: </strong>@Model.IsEditing</p>
+
             <form method="post">
-                <!-- Hidden Field for Class Id (For Edit Mode) -->
                 <input type="hidden" asp-for="NewClass.Id" />
                 <div class="form-group">
                     <label for="ClassName">Class Name</label>
@@ -24,8 +27,6 @@
                     <label for="Description">Description</label>
                     <textarea class="form-control" asp-for="NewClass.Description"></textarea>
                 </div>
-
-                <!-- Conditional Button: Update or Add -->
                 @if (Model.IsEditing)
                 {
                     <button type="submit" asp-page-handler="Update" class="btn btn-warning mt-3">Update</button>
@@ -37,13 +38,38 @@
             </form>
         </div>
 
-        <!-- Table to Display Class Data -->
+        <!-- Table and Export Section -->
         <div class="col-md-8">
             <h2>Class List</h2>
-            <table class="table table-bordered table-striped mt-3">
+
+            <!-- Filter Form -->
+            <form method="get" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="SearchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Search by class name..." />
+                    <button type="submit" class="btn btn-secondary">Filter</button>
+                </div>
+            </form>
+
+            <!-- Export Form -->
+            <form method="post" asp-page-handler="ExportJson" class="mb-3">
+                <div class="form-group">
+                    <label>Select Columns to Export:</label><br />
+                    <label class="me-2"><input type="checkbox" name="SelectedColumns" value="ClassName" /> Class Name</label>
+                    <label class="me-2"><input type="checkbox" name="SelectedColumns" value="StudentCount" /> Student Count</label>
+                    <label class="me-2"><input type="checkbox" name="SelectedColumns" value="Description" /> Description</label>
+                </div>
+                <div class="form-group mt-2">
+                    <label>Export Mode:</label><br />
+                    <label class="me-2"><input type="radio" name="ExportMode" value="All" checked /> Unfiltered Export</label>
+                    <label class="me-2"><input type="radio" name="ExportMode" value="Filtered" /> Filtered Export</label>
+                </div>
+                <button type="submit" class="btn btn-success mt-2">Export to JSON</button>
+            </form>
+
+            <!-- Data Table -->
+            <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Id</th>
                         <th>Class Name</th>
                         <th>Student Count</th>
                         <th>Description</th>
@@ -51,18 +77,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (LabProject.Pages.IndexModel.ClassList.Count == 0)
+                    @if (Model.PaginatedData.Count == 0)
                     {
                         <tr>
-                            <td colspan="5" class="text-center">No class information available.</td>
+                            <td colspan="4" class="text-center">No data found.</td>
                         </tr>
                     }
                     else
                     {
-                        @foreach (var item in LabProject.Pages.IndexModel.ClassList)
+                        @foreach (var item in Model.PaginatedData)
                         {
                             <tr>
-                                <td>@item.Id</td>
                                 <td>@item.ClassName</td>
                                 <td>@item.StudentCount</td>
                                 <td>@item.Description</td>
@@ -75,6 +100,18 @@
                     }
                 </tbody>
             </table>
+
+            <!-- Pagination Controls -->
+            <nav>
+                <ul class="pagination">
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                            <a class="page-link" asp-page="./Index" asp-route-SearchTerm="@Model.SearchTerm" asp-route-PageNumber="@i">@i</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
