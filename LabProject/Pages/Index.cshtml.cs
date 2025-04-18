@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using LabProject.Models;
-using System.Linq;
 using System.Text.Json;
 
 namespace LabProject.Pages
@@ -10,11 +9,9 @@ namespace LabProject.Pages
     {
         public static List<ClassInformationModel> ClassList { get; set; } = GenerateFakeData();
 
-        // Filtreleme
         [BindProperty(SupportsGet = true)]
         public string? SearchTerm { get; set; }
 
-        // Sayfalama
         [BindProperty(SupportsGet = true)]
         public int PageNumber { get; set; } = 1;
 
@@ -33,7 +30,7 @@ namespace LabProject.Pages
         public string[] SelectedColumns { get; set; } = Array.Empty<string>();
 
         [BindProperty]
-        public string ExportMode { get; set; } = "All"; // "All" or "Filtered"
+        public string ExportMode { get; set; } = "All";
 
         public void OnGet()
         {
@@ -48,7 +45,6 @@ namespace LabProject.Pages
                 return Page();
             }
 
-            // Add new class to list dynamically
             NewClass.Id = ClassList.Any() ? ClassList.Max(c => c.Id) + 1 : 1;
             ClassList.Add(NewClass);
 
@@ -63,7 +59,6 @@ namespace LabProject.Pages
                 return Page();
             }
 
-            // Update existing class in the list dynamically
             var existing = ClassList.FirstOrDefault(c => c.Id == NewClass.Id);
             if (existing != null)
             {
@@ -144,53 +139,65 @@ namespace LabProject.Pages
         }
 
         public IActionResult OnPostExportJson()
+{
+    // Tarayıcıdan gelen SelectedColumns verisini kontrol et ve ayrıştır
+    if (Request.Form.TryGetValue("SelectedColumns", out var selected))
+    {
+        SelectedColumns = selected.ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
+    }
+
+    List<ClassInformationTable> sourceData;
+
+    if (ExportMode == "Filtered")
+    {
+        var query = ClassList.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(SearchTerm))
+            query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
+
+        sourceData = query.Select(c => new ClassInformationTable
         {
-            List<ClassInformationTable> sourceData;
+            Id = c.Id,
+            ClassName = c.ClassName,
+            StudentCount = c.StudentCount,
+            Description = c.Description
+        }).ToList();
 
-            if (ExportMode == "Filtered")
-            {
-                var query = ClassList.AsQueryable();
-                if (!string.IsNullOrWhiteSpace(SearchTerm))
-                    query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
-
-                sourceData = query.Select(c => new ClassInformationTable
-                {
-                    Id = c.Id,
-                    ClassName = c.ClassName,
-                    StudentCount = c.StudentCount,
-                    Description = c.Description
-                }).ToList();
-            }
-            else
-            {
-                sourceData = ClassList.Select(c => new ClassInformationTable
-                {
-                    Id = c.Id,
-                    ClassName = c.ClassName,
-                    StudentCount = c.StudentCount,
-                    Description = c.Description
-                }).ToList();
-
-                // ExportMode "All" ise tüm sütunları dahil et
-                SelectedColumns = new[] { "ClassName", "StudentCount", "Description" };
-            }
-
-            var columns = SelectedColumns.Length == 0
-                ? new[] { "ClassName", "StudentCount", "Description" }
-                : SelectedColumns;
-
-            var exportData = sourceData.Select(item =>
-            {
-                var dict = new Dictionary<string, object>();
-                if (columns.Contains("ClassName")) dict["ClassName"] = item.ClassName;
-                if (columns.Contains("StudentCount")) dict["StudentCount"] = item.StudentCount;
-                if (columns.Contains("Description")) dict["Description"] = item.Description;
-                return dict;
-            }).ToList();
-
-            var json = JsonSerializer.Serialize(exportData, new JsonSerializerOptions { WriteIndented = true });
-            var bytes = System.Text.Encoding.UTF8.GetBytes(json);
-            return File(bytes, "application/json", $"export_{DateTime.Now:yyyyMMdd_HHmmss}.json");
+        // Filtered modda hiçbir sütun seçilmemişse, tüm sütunları kullan
+        if (SelectedColumns == null || SelectedColumns.Length == 0)
+        {
+            SelectedColumns = new[] { "ClassName", "StudentCount", "Description" };
         }
+    }
+    else // Unfiltered
+    {
+        // Her zaman tüm verileri ve tüm sütunları al
+        sourceData = ClassList.Select(c => new ClassInformationTable
+        {
+            Id = c.Id,
+            ClassName = c.ClassName,
+            StudentCount = c.StudentCount,
+            Description = c.Description
+        }).ToList();
+
+        SelectedColumns = new[] { "ClassName", "StudentCount", "Description" };
+    }
+
+    // Seçilen sütunlara göre export verisini oluştur
+    var exportData = sourceData.Select(item =>
+    {
+        var dict = new Dictionary<string, object>();
+        if (SelectedColumns.Contains("ClassName")) dict["ClassName"] = item.ClassName;
+        if (SelectedColumns.Contains("StudentCount")) dict["StudentCount"] = item.StudentCount;
+        if (SelectedColumns.Contains("Description")) dict["Description"] = item.Description;
+        return dict;
+    }).ToList();
+
+    var json = JsonSerializer.Serialize(exportData, new JsonSerializerOptions { WriteIndented = true });
+    var bytes = System.Text.Encoding.UTF8.GetBytes(json);
+    return File(bytes, "application/json", $"export_{DateTime.Now:yyyyMMdd_HHmmss}.json");
+}
+
+
     }
 }

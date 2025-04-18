@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "7wPefr8xy6nMTl4VhgRcmK8RFsP72q0Q3N2gMkO12qs=",
+  "Hash": "YE7If/3PyiNpdKbPc9H7KwQ0gwCw6cqTXnssmeqrLJM=",
   "Source": "LabProject",
   "BasePath": "_content/LabProject",
   "Mode": "Default",
@@ -93,12 +93,12 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\wwwroot\\js\\site.js",
+      "Identity": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\wwwroot\\js\\column-select.js",
       "SourceId": "LabProject",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\wwwroot\\",
       "BasePath": "_content/LabProject",
-      "RelativePath": "js/site.js",
+      "RelativePath": "js/column-select.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -109,7 +109,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\site.js"
+      "OriginalItemSpec": "wwwroot\\js\\column-select.js"
     },
     {
       "Identity": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
