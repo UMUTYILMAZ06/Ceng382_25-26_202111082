@@ -1,18 +1,35 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const selectedColumns = new Set();
-    const selectedInput = document.getElementById("SelectedColumnsInput");
+    const columnHeaders = document.querySelectorAll(".selectable-column");
+    const selectedColumnsInput = document.getElementById("SelectedColumnsInput");
 
-    document.querySelectorAll(".selectable-column").forEach(th => {
-        th.addEventListener("click", function () {
-            const column = th.getAttribute("data-column");
-            if (selectedColumns.has(column)) {
-                selectedColumns.delete(column);
-                th.classList.remove("table-active");
+    const selectedColumns = new Set();
+
+    function toggleColumnHighlight(columnName, isSelected) {
+        const cells = document.querySelectorAll(`.col-${columnName}`);
+        cells.forEach(cell => {
+            if (isSelected) {
+                cell.classList.add("bg-primary", "text-white");
             } else {
-                selectedColumns.add(column);
-                th.classList.add("table-active");
+                cell.classList.remove("bg-primary", "text-white");
             }
-            selectedInput.value = Array.from(selectedColumns).join(",");
+        });
+    }
+
+    columnHeaders.forEach(header => {
+        header.addEventListener("click", () => {
+            const columnName = header.getAttribute("data-column");
+
+            if (selectedColumns.has(columnName)) {
+                selectedColumns.delete(columnName);
+                header.classList.remove("bg-primary", "text-white");
+                toggleColumnHighlight(columnName, false);
+            } else {
+                selectedColumns.add(columnName);
+                header.classList.add("bg-primary", "text-white");
+                toggleColumnHighlight(columnName, true);
+            }
+
+            selectedColumnsInput.value = Array.from(selectedColumns).join(",");
         });
     });
 });

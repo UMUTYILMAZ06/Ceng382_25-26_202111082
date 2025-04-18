@@ -139,65 +139,44 @@ namespace LabProject.Pages
         }
 
         public IActionResult OnPostExportJson()
-{
-    // Tarayıcıdan gelen SelectedColumns verisini kontrol et ve ayrıştır
-    if (Request.Form.TryGetValue("SelectedColumns", out var selected))
-    {
-        SelectedColumns = selected.ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
-    }
-
-    List<ClassInformationTable> sourceData;
-
-    if (ExportMode == "Filtered")
-    {
-        var query = ClassList.AsQueryable();
-
-        if (!string.IsNullOrWhiteSpace(SearchTerm))
-            query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
-
-        sourceData = query.Select(c => new ClassInformationTable
         {
-            Id = c.Id,
-            ClassName = c.ClassName,
-            StudentCount = c.StudentCount,
-            Description = c.Description
-        }).ToList();
+            if (Request.Form.TryGetValue("SelectedColumns", out var selected))
+            {
+                SelectedColumns = selected.ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
+            }
 
-        // Filtered modda hiçbir sütun seçilmemişse, tüm sütunları kullan
-        if (SelectedColumns == null || SelectedColumns.Length == 0)
-        {
-            SelectedColumns = new[] { "ClassName", "StudentCount", "Description" };
+            var query = ClassList.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(SearchTerm))
+                query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
+
+            var pageData = query
+                .Skip((PageNumber - 1) * PageSize)
+                .Take(PageSize)
+                .Select(c => new ClassInformationTable
+                {
+                    Id = c.Id,
+                    ClassName = c.ClassName,
+                    StudentCount = c.StudentCount,
+                    Description = c.Description
+                })
+                .ToList();
+
+            if (SelectedColumns == null || SelectedColumns.Length == 0)
+                SelectedColumns = new[] { "ClassName", "StudentCount", "Description" };
+
+            var exportData = pageData.Select(item =>
+            {
+                var dict = new Dictionary<string, object>();
+                if (SelectedColumns.Contains("ClassName")) dict["ClassName"] = item.ClassName;
+                if (SelectedColumns.Contains("StudentCount")) dict["StudentCount"] = item.StudentCount;
+                if (SelectedColumns.Contains("Description")) dict["Description"] = item.Description;
+                return dict;
+            }).ToList();
+
+            var json = JsonSerializer.Serialize(exportData, new JsonSerializerOptions { WriteIndented = true });
+            var bytes = System.Text.Encoding.UTF8.GetBytes(json);
+            return File(bytes, "application/json", $"filtered_export_{DateTime.Now:yyyyMMdd_HHmmss}.json");
         }
-    }
-    else // Unfiltered
-    {
-        // Her zaman tüm verileri ve tüm sütunları al
-        sourceData = ClassList.Select(c => new ClassInformationTable
-        {
-            Id = c.Id,
-            ClassName = c.ClassName,
-            StudentCount = c.StudentCount,
-            Description = c.Description
-        }).ToList();
-
-        SelectedColumns = new[] { "ClassName", "StudentCount", "Description" };
-    }
-
-    // Seçilen sütunlara göre export verisini oluştur
-    var exportData = sourceData.Select(item =>
-    {
-        var dict = new Dictionary<string, object>();
-        if (SelectedColumns.Contains("ClassName")) dict["ClassName"] = item.ClassName;
-        if (SelectedColumns.Contains("StudentCount")) dict["StudentCount"] = item.StudentCount;
-        if (SelectedColumns.Contains("Description")) dict["Description"] = item.Description;
-        return dict;
-    }).ToList();
-
-    var json = JsonSerializer.Serialize(exportData, new JsonSerializerOptions { WriteIndented = true });
-    var bytes = System.Text.Encoding.UTF8.GetBytes(json);
-    return File(bytes, "application/json", $"export_{DateTime.Now:yyyyMMdd_HHmmss}.json");
-}
-
-
     }
 }
