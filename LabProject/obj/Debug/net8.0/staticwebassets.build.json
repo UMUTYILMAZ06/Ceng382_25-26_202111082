@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "YE7If/3PyiNpdKbPc9H7KwQ0gwCw6cqTXnssmeqrLJM=",
+  "Hash": "hfyGqfleCPEcJ2VDv7TnGRcJXNkxbxkyALdeE+3D8Z4=",
   "Source": "LabProject",
   "BasePath": "_content/LabProject",
   "Mode": "Default",
@@ -74,6 +74,25 @@
       "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
+      "Identity": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\wwwroot\\data\\users.json",
+      "SourceId": "LabProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\wwwroot\\",
+      "BasePath": "_content/LabProject",
+      "RelativePath": "data/users.json",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\data\\users.json"
+    },
+    {
       "Identity": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\wwwroot\\favicon.ico",
       "SourceId": "LabProject",
       "SourceType": "Discovered",
@@ -91,6 +110,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\wwwroot\\images\\gslogo.png",
+      "SourceId": "LabProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\wwwroot\\",
+      "BasePath": "_content/LabProject",
+      "RelativePath": "images/gslogo.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\gslogo.png"
     },
     {
       "Identity": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\wwwroot\\js\\column-select.js",

@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using LabProject.Models;
+using LabProject.Helpers;
 using System.Text.Json;
 
 namespace LabProject.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BasePageModel // Access Control için BasePageModel
     {
         public static List<ClassInformationModel> ClassList { get; set; } = GenerateFakeData();
 

@@ -9,8 +9,16 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\wwwroot\\data\\users.json",
+      "PackagePath": "staticwebassets\\data\\users.json"
+    },
+    {
       "Id": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\wwwroot\\images\\gslogo.png",
+      "PackagePath": "staticwebassets\\images\\gslogo.png"
     },
     {
       "Id": "C:\\Users\\90553\\Desktop\\New folder (2)\\Ceng382_25-26_202111082\\LabProject\\wwwroot\\js\\column-select.js",

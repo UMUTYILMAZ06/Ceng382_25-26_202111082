@@ -1,0 +1,70 @@
+@page
+@model LabProject.Pages.LoginModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #000000; /* Galatasaray koyu kırmızı */
+            color: white;
+        }
+
+        .login-box {
+            width: 320px;
+            margin-top: 100px;
+        }
+
+        .form-control {
+            height: 35px;
+        }
+
+        .btn-gs {
+            background-color: #FDB913;
+            color: black;
+            border: none;
+        }
+
+        .btn-gs:hover {
+            background-color: #e0a800;
+        }
+
+        .gs-logo {
+            width: 90px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4">
+                <div class="login-box ms-4">
+                    <img src="~/images/gslogo.png" alt="GS Logo" class="gs-logo" />
+                    <h4>Login</h4>
+                    <form method="post">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" asp-for="Username" class="form-control" required />
+                        </div>
+                        <div class="form-group mt-2">
+                            <label>Password</label>
+                            <input type="password" asp-for="Password" class="form-control" required />
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                        {
+                            <div class="alert alert-danger mt-2">@Model.ErrorMessage</div>
+                        }
+                        <button type="submit" class="btn btn-gs mt-3">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
