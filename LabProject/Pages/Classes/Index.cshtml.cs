@@ -33,15 +33,27 @@ namespace LabProject.Pages.Classes
         [BindProperty]
         public bool IsEditing { get; set; }
 
-        private bool IsUserLoggedIn()
-        {
-            return Request.Cookies["loggedUser"] != null;
-        }
+        private bool IsUserLoggedIn() => Request.Cookies["loggedUser"] != null;
 
         public async Task<IActionResult> OnGetAsync()
         {
             if (!IsUserLoggedIn())
                 return RedirectToPage("/Login");
+
+            // ✅ Otomatik veri ekleme
+            if (!await _context.Classes.AnyAsync())
+            {
+                var autoClasses = Enumerable.Range(1, 100).Select(i => new Class
+                {
+                    Name = $"Class {i}",
+                    PersonCount = i * 10,
+                    Description = $"Auto generated description {i}",
+                    IsActive = true
+                }).ToList();
+
+                await _context.Classes.AddRangeAsync(autoClasses);
+                await _context.SaveChangesAsync();
+            }
 
             await LoadDataAsync();
             return Page();
@@ -49,8 +61,7 @@ namespace LabProject.Pages.Classes
 
         public async Task<IActionResult> OnPostAddAsync()
         {
-            if (!IsUserLoggedIn())
-                return RedirectToPage("/Login");
+            if (!IsUserLoggedIn()) return RedirectToPage("/Login");
 
             if (!ModelState.IsValid)
             {
@@ -66,8 +77,7 @@ namespace LabProject.Pages.Classes
 
         public async Task<IActionResult> OnPostUpdateAsync()
         {
-            if (!IsUserLoggedIn())
-                return RedirectToPage("/Login");
+            if (!IsUserLoggedIn()) return RedirectToPage("/Login");
 
             if (!ModelState.IsValid)
             {
@@ -83,20 +93,12 @@ namespace LabProject.Pages.Classes
 
         public async Task<IActionResult> OnGetEditAsync(int id)
         {
-            if (!IsUserLoggedIn())
-                return RedirectToPage("/Login");
+            if (!IsUserLoggedIn()) return RedirectToPage("/Login");
 
             var item = await _context.Classes.FindAsync(id);
             if (item != null)
             {
-                NewClass = new Class
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    PersonCount = item.PersonCount,
-                    Description = item.Description,
-                    IsActive = item.IsActive
-                };
+                NewClass = item;
                 IsEditing = true;
             }
 
@@ -106,13 +108,12 @@ namespace LabProject.Pages.Classes
 
         public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
-            if (!IsUserLoggedIn())
-                return RedirectToPage("/Login");
+            if (!IsUserLoggedIn()) return RedirectToPage("/Login");
 
             var existing = await _context.Classes.FindAsync(id);
             if (existing != null)
             {
-                existing.IsActive = false; // Fiziksel silme yerine pasif hale getir
+                existing.IsActive = false;
                 _context.Classes.Update(existing);
                 await _context.SaveChangesAsync();
             }
@@ -122,8 +123,7 @@ namespace LabProject.Pages.Classes
 
         public async Task<IActionResult> OnPostExportJsonAsync()
         {
-            if (!IsUserLoggedIn())
-                return RedirectToPage("/Login");
+            if (!IsUserLoggedIn()) return RedirectToPage("/Login");
 
             var query = _context.Classes.Where(c => c.IsActive);
 
@@ -133,12 +133,8 @@ namespace LabProject.Pages.Classes
             var exportData = await query
                 .Skip((PageNumber - 1) * PageSize)
                 .Take(PageSize)
-                .Select(c => new
-                {
-                    c.Name,
-                    c.PersonCount,
-                    c.Description
-                }).ToListAsync();
+                .Select(c => new { c.Name, c.PersonCount, c.Description })
+                .ToListAsync();
 
             var json = JsonSerializer.Serialize(exportData, new JsonSerializerOptions { WriteIndented = true });
             var bytes = System.Text.Encoding.UTF8.GetBytes(json);
