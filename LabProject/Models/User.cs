@@ -1,13 +1,23 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace LabProject.Models
 {
     public class User
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string Role { get; set; }
-        public bool IsActive { get; set; }
-        public DateTime CreatedAt { get; set; }
+        [Key]  // ✅ Primary Key belirtiyoruz
+        public int Id { get; set; }
+
+        [Required]
+        public string Username { get; set; } = string.Empty;
+
+        [Required]
+        public string Password { get; set; } = string.Empty;
+
+        public string Role { get; set; } = string.Empty;
+
+        public bool IsActive { get; set; } = true;
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

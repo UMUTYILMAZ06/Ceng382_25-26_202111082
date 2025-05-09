@@ -1,0 +1,15 @@
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@if (HttpContextAccessor.HttpContext.Request.Cookies["loggedUser"] != null)
+{
+    <form method="post" asp-page="/Logout" class="d-inline">
+        <span class="text-dark me-2">
+            Merhaba, @HttpContextAccessor.HttpContext.Request.Cookies["loggedUser"]
+        </span>
+        <button type="submit" class="btn btn-link">Logout</button>
+    </form>
+}
+else
+{
+    <a class="btn btn-outline-primary me-2" asp-page="/Login">Login</a>
+}

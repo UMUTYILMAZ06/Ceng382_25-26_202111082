@@ -1,68 +1,64 @@
+using LabProject.Data; // DbContext erişimi için
+using LabProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Text.Json;
-using LabProject.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LabProject.Pages
 {
     public class LoginModel : PageModel
     {
-        [BindProperty]
-        public string Username { get; set; }
+        private readonly SchoolDbContext _context;
+
+        public LoginModel(SchoolDbContext context)
+        {
+            _context = context;
+        }
 
         [BindProperty]
-        public string Password { get; set; }
+        public string Username { get; set; } = string.Empty;
 
-        public string ErrorMessage { get; set; }
+        [BindProperty]
+        public string Password { get; set; } = string.Empty;
+
+        public string ErrorMessage { get; set; } = string.Empty;
 
         public void OnGet() { }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
-            var filePath = Path.Combine("wwwroot", "data", "users.json");
-            if (!System.IO.File.Exists(filePath))
+            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
             {
-                ErrorMessage = "User data not found.";
+                ErrorMessage = "Username and password are required.";
                 return Page();
             }
 
-            var json = System.IO.File.ReadAllText(filePath);
-            var users = JsonSerializer.Deserialize<List<User>>(json);
+            // Veritabanındaki Users tablosundan kullanıcıyı ara
+            var matchedUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == Username && u.Password == Password && u.IsActive);
 
-            var matchedUser = users?.FirstOrDefault(u =>
-                u.Username == Username &&
-                u.Password == Password &&
-                u.IsActive);
-
-            if (matchedUser != null)
-            {
-                var token = Guid.NewGuid().ToString();
-                var sessionId = HttpContext.Session.Id;
-
-                // Session
-                HttpContext.Session.SetString("username", matchedUser.Username);
-                HttpContext.Session.SetString("token", token);
-                HttpContext.Session.SetString("session_id", sessionId);
-
-                // Cookie
-                var options = new CookieOptions
-                {
-                    Expires = DateTime.UtcNow.AddMinutes(30),
-                    HttpOnly = true,
-                    Secure = true,
-                    SameSite = SameSiteMode.Strict
-                };
-                Response.Cookies.Append("username", matchedUser.Username, options);
-                Response.Cookies.Append("token", token, options);
-                Response.Cookies.Append("session_id", sessionId, options);
-
-                return RedirectToPage("/Index");
-            }
-            else
+            if (matchedUser == null)
             {
                 ErrorMessage = "Invalid username or password.";
                 return Page();
             }
+
+            // Session
+            var token = Guid.NewGuid().ToString();
+            HttpContext.Session.SetString("username", matchedUser.Username);
+            HttpContext.Session.SetString("token", token);
+
+            // Cookie
+            var options = new CookieOptions
+            {
+                Expires = DateTime.UtcNow.AddMinutes(30),
+                HttpOnly = true,
+                SameSite = SameSiteMode.Strict
+            };
+
+            Response.Cookies.Append("loggedUser", matchedUser.Username, options);
+
+            return RedirectToPage("/Classes/Index");
         }
     }
 }
